@@ -1,12 +1,13 @@
 {
   "build": {
-    "appId": "com.example.app",
-    "productName": "app",
+    "appId": "com.hotelmanagement.desktop",
+    "productName": "Hotel Management",
     "publish": [
       {
         "provider": "github",
         "owner": "tempuser4402",
-        "repo": "Hotel_Management"
+        "repo": "Hotel_Management",
+        "releaseType": "release"
       }
     ],
     "directories": {
@@ -23,7 +24,7 @@
   },
   "name": "ui",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.0",
   "main": "electron.cjs",
   "type": "module",
   "scripts": {

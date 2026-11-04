@@ -1,9 +1,107 @@
 const { app, BrowserWindow, dialog } = require("electron");
 const { autoUpdater } = require("electron-updater");
+const path = require("path");
 
 const WEBSITE_URL = "https://hotel-management-khaki-three.vercel.app/";
 
 let mainWindow = null;
+let updateProgressWindow = null;
+
+function createUpdateProgressWindow() {
+  if (updateProgressWindow) return;
+
+  updateProgressWindow = new BrowserWindow({
+    width: 430,
+    height: 230,
+    parent: mainWindow,
+    modal: true,
+    resizable: false,
+    minimizable: false,
+    maximizable: false,
+    autoHideMenuBar: true,
+    title: "Downloading Update",
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+    },
+  });
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: #ffffff;
+          color: #222;
+          padding: 25px;
+          text-align: center;
+          overflow: hidden;
+          margin: 0;
+          box-sizing: border-box;
+        }
+
+        h2 { margin-bottom: 10px; }
+
+        #status {
+          color: #666;
+          font-size: 14px;
+        }
+
+        .progress-container {
+          width: 100%;
+          height: 12px;
+          background: #e5e5e5;
+          border-radius: 10px;
+          margin-top: 25px;
+          overflow: hidden;
+        }
+
+        #progress {
+          width: 0%;
+          height: 100%;
+          background: #2563eb;
+          transition: width 0.2s;
+        }
+
+        #details {
+          margin-top: 15px;
+          font-size: 13px;
+          color: #555;
+        }
+      </style>
+    </head>
+    <body>
+      <h2>Downloading Update</h2>
+      <div id="status">Please wait while we download the latest version.</div>
+
+      <div class="progress-container">
+        <div id="progress"></div>
+      </div>
+
+      <div id="details">Starting download...</div>
+    </body>
+    </html>
+  `;
+
+  updateProgressWindow.loadURL(
+    "data:text/html;charset=utf-8," + encodeURIComponent(html),
+  );
+
+  updateProgressWindow.on("closed", () => {
+    updateProgressWindow = null;
+  });
+}
+
+function closeUpdateProgressWindow() {
+  if (updateProgressWindow && !updateProgressWindow.isDestroyed()) {
+    updateProgressWindow.close();
+  }
+
+  updateProgressWindow = null;
+}
 
 async function setAutoUpdates() {
   if (!app.isPackaged) {
@@ -33,8 +131,10 @@ async function setAutoUpdates() {
 
     if (result.response === 0) {
       try {
+        createUpdateProgressWindow();
         await autoUpdater.downloadUpdate();
       } catch (error) {
+        closeUpdateProgressWindow();
         console.error("Download failed:", error);
 
         dialog.showMessageBox(mainWindow, {
@@ -53,7 +153,25 @@ async function setAutoUpdates() {
   });
 
   autoUpdater.on("download-progress", (progress) => {
-    console.log(`Downloading: ${Math.round(progress.percent)}%`);
+    const percent = Math.round(progress.percent);
+
+    const transferred = (progress.transferred / (1024 * 1024)).toFixed(2);
+
+    const total = (progress.total / (1024 * 1024)).toFixed(2);
+
+    if (updateProgressWindow && !updateProgressWindow.isDestroyed()) {
+      updateProgressWindow.webContents
+        .executeJavaScript(
+          `
+        document.getElementById("progress").style.width = "${percent}%";
+        document.getElementById("status").innerText =
+          "Downloading update... ${percent}%";
+        document.getElementById("details").innerText =
+          "${transferred} MB / ${total} MB downloaded";
+      `,
+        )
+        .catch(console.error);
+    }
   });
 
   autoUpdater.on("update-downloaded", async (info) => {
@@ -142,9 +260,14 @@ async function createWindow() {
   });
 
   try {
-    await mainWindow.loadURL(WEBSITE_URL);
+    if (app.isPackaged) {
+      //Installed desktop app: load its bundled frontend
+      await mainWindow.loadFile(path.join(__dirname, "dist", "index.html"));
+    } else {
+      await mainWindow.loadURL("http://localhost:5173");
+    }
   } catch (error) {
-    console.error("Website loading failed:", error);
+    console.error("Application loading failed:", error);
 
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.show();
@@ -152,8 +275,8 @@ async function createWindow() {
 
     await dialog.showMessageBox({
       type: "error",
-      title: "Website Loading Error",
-      message: "Unable to load the Hotel Management website.",
+      title: "Application Loading Error",
+      message: "Unable to load the Hotel Management Application.",
       detail: error.message,
       buttons: ["OK"],
     });

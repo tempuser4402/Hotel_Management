@@ -9,8 +9,8 @@ function App() {
 
   return (
     <>
-    <h1>Manager App Version 0.0.2</h1>
-    <p>New Version is Launched</p>
+    <h1>Manager App Version 0.0.0</h1>
+    <p>Version 0.0.0 is now available!</p>
     </>
   )
 }
