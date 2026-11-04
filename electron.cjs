@@ -1,8 +1,59 @@
 const { app, BrowserWindow, dialog } = require("electron");
+const { autoUpdater } = require("electron-updater");
 
 const WEBSITE_URL = "https://hotel-management-khaki-three.vercel.app/";
 
 let mainWindow = null;
+
+function setAutoUpdates() {
+  if (!app.isPackaged) return true; // Skip auto-updates in development mode
+
+  autouUpdater.autoDownload = false;
+  autoUpdater.autoInstallOnAppQuit = false;
+
+  autoUpdater.on("update-available", (info) => {
+    dialog.showMessageBox({
+      type: "info",
+      title: "Update Available",
+      message: `Version ${info.version} is available. Do you want to update now?`,
+      buttons: ["Update", "Later"],
+      defaultId: 0,
+      cancelId: 1,
+    });
+
+    if (result.response === 0) {
+      autoUpdater.downloadUpdate();
+    }
+  });
+
+  autoUpdater.on("update-not-available", () => {
+    console.log("You are using the latest version.");
+  });
+
+  autoUpdater.on("download-progress", (progress) => {
+    console.log(`Update downloading: ${Math.round(progress.percent)}%`);
+  });
+
+  autoUpdater.on("update-downloaded", async () => {
+    const result = await dialog.showMessageBox({
+      type: "info",
+      title: "Update Downloaded",
+      message: "Your update is ready!",
+      detail: "Restart the application to install the new version.",
+      buttons: ["Restart Now", "Later"],
+      defaultId: 0,
+    });
+
+    if (result.response === 0) {
+      autoUpdater.quitAndInstall();
+    }
+  });
+  autoUpdater.on("error", (error) => {
+    console.error("Updater error:", error);
+  });
+
+  autoUpdater.checkForUpdates();
+}
 
 async function checkInternetConnection() {
   try {
@@ -86,6 +137,8 @@ app.whenReady().then(() => {
     console.error("Startup error:", error);
     app.quit();
   });
+
+  setAutoUpdates();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {

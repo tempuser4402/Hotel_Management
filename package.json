@@ -2,6 +2,13 @@
   "build": {
     "appId": "com.example.app",
     "productName": "app",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "tempuser4402",
+        "repo": "Hotel_Management"
+      }
+    ],
     "directories": {
       "output": "release"
     },
@@ -28,6 +35,7 @@
     "desktop:build": "npm run build && electron-builder --win"
   },
   "dependencies": {
+    "electron-updater": "^6.8.11",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },

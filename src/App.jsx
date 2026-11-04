@@ -10,6 +10,7 @@ function App() {
   return (
     <>
     <h1>Manager App Version 1.0.0</h1>
+    <p>New Version is Launched</p>
     </>
   )
 }
