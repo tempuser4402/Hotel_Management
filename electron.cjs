@@ -7,7 +7,7 @@ let mainWindow = null;
 
 async function setAutoUpdates() {
   if (!app.isPackaged) {
-    console.log("Auto-updates disabled in development mode.");
+    console.log("Auto-updates disabled in development.");
     return;
   }
 
@@ -19,22 +19,32 @@ async function setAutoUpdates() {
   });
 
   autoUpdater.on("update-available", async (info) => {
-    console.log("New update available:", info.version);
+    console.log("New version available:", info.version);
 
-    const result = await dialog.showMessageBox({
+    const result = await dialog.showMessageBox(mainWindow, {
       type: "info",
-      title: "Update Available",
-      message: `Version ${info.version} is available.`,
-      detail: "Would you like to download and install this update?",
+      title: "Hotel Management Update",
+      message: `New version ${info.version} is available!`,
+      detail: "Would you like to download the latest version?",
       buttons: ["Update Now", "Later"],
       defaultId: 0,
       cancelId: 1,
     });
 
     if (result.response === 0) {
-      autoUpdater.downloadUpdate().catch((error) => {
-        console.error("Update download failed:", error);
-      });
+      try {
+        await autoUpdater.downloadUpdate();
+      } catch (error) {
+        console.error("Download failed:", error);
+
+        dialog.showMessageBox(mainWindow, {
+          type: "error",
+          title: "Update Failed",
+          message: "Unable to download the update.",
+          detail: error.message,
+          buttons: ["OK"],
+        });
+      }
     }
   });
 
@@ -43,17 +53,15 @@ async function setAutoUpdates() {
   });
 
   autoUpdater.on("download-progress", (progress) => {
-    console.log(`Downloading update: ${Math.round(progress.percent)}%`);
+    console.log(`Downloading: ${Math.round(progress.percent)}%`);
   });
 
   autoUpdater.on("update-downloaded", async (info) => {
-    console.log("Update downloaded:", info.version);
-
-    const result = await dialog.showMessageBox({
+    const result = await dialog.showMessageBox(mainWindow, {
       type: "info",
       title: "Update Ready",
-      message: `Version ${info.version} has been downloaded.`,
-      detail: "Restart the application to install the update.",
+      message: `Version ${info.version} is ready to install.`,
+      detail: "Restart the application to complete the update.",
       buttons: ["Restart Now", "Later"],
       defaultId: 0,
       cancelId: 1,
@@ -65,7 +73,7 @@ async function setAutoUpdates() {
   });
 
   autoUpdater.on("error", (error) => {
-    console.error("Auto-updater error:", error);
+    console.error("Updater error:", error);
   });
 
   try {
@@ -152,13 +160,18 @@ async function createWindow() {
   }
 }
 
-app.whenReady().then(() => {
-  createWindow().catch((error) => {
+app.whenReady().then(async () => {
+  try {
+    await createWindow();
+
+    // Check for updates only after the application opens.
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      setAutoUpdates();
+    }
+  } catch (error) {
     console.error("Startup error:", error);
     app.quit();
-  });
-
-  setAutoUpdates();
+  }
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
