@@ -32,7 +32,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "desktop": "electron .",
-    "desktop:build": "npm run build && electron-builder --win"
+    "desktop:build": "npm run build && electron-builder --win --publish always"
   },
   "dependencies": {
     "electron-updater": "^6.8.11",
