@@ -4,13 +4,18 @@ jspm_packages/
 .pnp
 .pnp.js
 
-# Electron-specific build outputs
+# Build outputs
 dist/
 build/
 release/
 release-builds/
 out/
 app-builds/
+.next/
+.nuxt/
+.svelte-kit/
+
+# Electron build outputs
 *.dmg
 *.exe
 *.pkg
@@ -20,32 +25,27 @@ app-builds/
 *.asar
 
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Runtime data & Caches
+# Runtime data & caches
 .eslintcache
 .stylelintcache
 .cache/
 .parcel-cache/
-.next/
-.nuxt/
-.svelte-kit/
-ts-gen
+ts-gen/
 
-# Local environment variables and secrets
+# Environment variables and secrets
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
 *.pem
 
-# IDEs and Text Editors
+# IDEs and editors
 .vscode/
 !.vscode/extensions.json
 !.vscode/launch.json
@@ -63,3 +63,8 @@ ts-gen
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
