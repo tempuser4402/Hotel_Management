@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-    <h1>Manager App</h1>
+    <h1>Manager App Version 1.0.0</h1>
     </>
   )
 }
