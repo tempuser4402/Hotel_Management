@@ -1,0 +1,65 @@
+# Dependencies
+node_modules/
+jspm_packages/
+.pnp
+.pnp.js
+
+# Electron-specific build outputs
+dist/
+build/
+release/
+release-builds/
+out/
+app-builds/
+*.dmg
+*.exe
+*.pkg
+*.deb
+*.rpm
+*.app
+*.asar
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data & Caches
+.eslintcache
+.stylelintcache
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.svelte-kit/
+ts-gen
+
+# Local environment variables and secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+
+# IDEs and Text Editors
+.vscode/
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
