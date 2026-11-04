@@ -1,44 +1,47 @@
 const { app, BrowserWindow, dialog } = require("electron");
-const path = require("path");
-const isDev = !app.isPackaged;
 
 const WEBSITE_URL = "https://hotel-management-khaki-three.vercel.app/";
+
+let mainWindow = null;
 
 async function checkInternetConnection() {
   try {
     const response = await fetch(WEBSITE_URL, {
-      method: "GET",
       signal: AbortSignal.timeout(8000),
     });
+
     return response.ok;
   } catch (error) {
-    console.error("Error checking internet connection:", error.message);
+    console.error("Internet check failed:", error.message);
     return false;
   }
 }
 
 async function createWindow() {
-  const isConnected = await checkInternetConnection();
+  while (true) {
+    const connected = await checkInternetConnection();
 
-  if (!isConnected) {
+    if (connected) break;
+
     const result = await dialog.showMessageBox({
       type: "warning",
-      title: "No Internet Connection",
-      message: "Internet Connection is unavailable",
-      detail: "Please connect to the internet and try again",
-      buttons: ["retry", "Exit"],
+      title: "Internet Connection",
+      message: "Unable to connect to Hotel Management.",
+      detail: "Please check your internet connection.",
+      buttons: ["Retry", "Exit"],
       defaultId: 0,
+      cancelId: 1,
     });
 
-    if (result.response === 0) {
-      return createWindow();
+    if (result.response === 1) {
+      app.quit();
+      return;
     }
-
-    app.quit();
-    return;
   }
 
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
+    width: 1200,
+    height: 800,
     show: false,
     autoHideMenuBar: true,
     maximizable: true,
@@ -49,28 +52,50 @@ async function createWindow() {
     },
   });
 
-  if (isDev) {
-    // win.loadURL("http://localhost:5173");
-    win.loadURL("https://hotel-management-khaki-three.vercel.app/");
-    win.maximize();
-    win.show();
-  } else {
-    win.loadFile(path.join(__dirname, "../build/index.html"));
+  mainWindow.maximize();
+
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.show();
+  });
+
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
+
+  try {
+    await mainWindow.loadURL(WEBSITE_URL);
+  } catch (error) {
+    console.error("Website loading failed:", error);
+
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.show();
+    }
+
+    await dialog.showMessageBox({
+      type: "error",
+      title: "Website Loading Error",
+      message: "Unable to load the Hotel Management website.",
+      detail: error.message,
+      buttons: ["OK"],
+    });
   }
 }
 
-// app.whenReady().then(() => {
-//   createWindow();
+app.whenReady().then(() => {
+  createWindow().catch((error) => {
+    console.error("Startup error:", error);
+    app.quit();
+  });
 
-//   app.on("activate", () => {
-//     if (BrowserWindow.getAllWindows().length === 0) {
-//       createWindow();
-//     }
-//   });
-// });
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow().catch(console.error);
+    }
+  });
+});
 
-// app.on("window-all-closed", () => {
-//   if (process.platform !== "darwin") {
-//     app.quit();
-//   }
-// });
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
