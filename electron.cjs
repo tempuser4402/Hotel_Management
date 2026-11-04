@@ -5,54 +5,74 @@ const WEBSITE_URL = "https://hotel-management-khaki-three.vercel.app/";
 
 let mainWindow = null;
 
-function setAutoUpdates() {
-  if (!app.isPackaged) return true; // Skip auto-updates in development mode
+async function setAutoUpdates() {
+  if (!app.isPackaged) {
+    console.log("Auto-updates disabled in development mode.");
+    return;
+  }
 
-  autouUpdater.autoDownload = false;
+  autoUpdater.autoDownload = false;
   autoUpdater.autoInstallOnAppQuit = false;
 
-  autoUpdater.on("update-available", (info) => {
-    dialog.showMessageBox({
+  autoUpdater.on("checking-for-update", () => {
+    console.log("Checking for updates...");
+  });
+
+  autoUpdater.on("update-available", async (info) => {
+    console.log("New update available:", info.version);
+
+    const result = await dialog.showMessageBox({
       type: "info",
       title: "Update Available",
-      message: `Version ${info.version} is available. Do you want to update now?`,
-      buttons: ["Update", "Later"],
+      message: `Version ${info.version} is available.`,
+      detail: "Would you like to download and install this update?",
+      buttons: ["Update Now", "Later"],
       defaultId: 0,
       cancelId: 1,
     });
 
     if (result.response === 0) {
-      autoUpdater.downloadUpdate();
+      autoUpdater.downloadUpdate().catch((error) => {
+        console.error("Update download failed:", error);
+      });
     }
   });
 
-  autoUpdater.on("update-not-available", () => {
-    console.log("You are using the latest version.");
+  autoUpdater.on("update-not-available", (info) => {
+    console.log("You are using the latest version:", info.version);
   });
 
   autoUpdater.on("download-progress", (progress) => {
-    console.log(`Update downloading: ${Math.round(progress.percent)}%`);
+    console.log(`Downloading update: ${Math.round(progress.percent)}%`);
   });
 
-  autoUpdater.on("update-downloaded", async () => {
+  autoUpdater.on("update-downloaded", async (info) => {
+    console.log("Update downloaded:", info.version);
+
     const result = await dialog.showMessageBox({
       type: "info",
-      title: "Update Downloaded",
-      message: "Your update is ready!",
-      detail: "Restart the application to install the new version.",
+      title: "Update Ready",
+      message: `Version ${info.version} has been downloaded.`,
+      detail: "Restart the application to install the update.",
       buttons: ["Restart Now", "Later"],
       defaultId: 0,
+      cancelId: 1,
     });
 
     if (result.response === 0) {
       autoUpdater.quitAndInstall();
     }
   });
+
   autoUpdater.on("error", (error) => {
-    console.error("Updater error:", error);
+    console.error("Auto-updater error:", error);
   });
 
-  autoUpdater.checkForUpdates();
+  try {
+    await autoUpdater.checkForUpdates();
+  } catch (error) {
+    console.error("Update check failed:", error);
+  }
 }
 
 async function checkInternetConnection() {
