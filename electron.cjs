@@ -261,8 +261,10 @@ async function createWindow() {
 
   try {
     if (app.isPackaged) {
+      const indexPath = path.join(app.getAppPath(), "dist", "index.html");
       //Installed desktop app: load its bundled frontend
-      await mainWindow.loadFile(path.join(__dirname, "dist", "index.html"));
+      console.log("Loading production app:", indexPath);
+      await mainWindow.loadFile(indexPath);
     } else {
       await mainWindow.loadURL("http://localhost:5173");
     }

@@ -21,12 +21,12 @@ import AccessControl from "./pages/AccessControl/accessControl";
 import Settings from "./pages/Settings/setting";
 import Integration from "./pages/Integration/integration";
 import Support from "./pages/Support/support";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, HashRouter } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
@@ -176,7 +176,7 @@ function App() {
             <Route path="/support" element={<Support />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 }
