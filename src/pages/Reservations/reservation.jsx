@@ -1,11 +1,9 @@
-import React from 'react'
+import { Outlet } from "react-router-dom";
 
-const reservation = () => {
+export default function Reservation() {
   return (
     <div>
-      Reservations
+      <Outlet />
     </div>
-  )
+  );
 }
-
-export default reservation

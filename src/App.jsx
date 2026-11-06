@@ -4,6 +4,12 @@ import Dashboard from "./pages/Dashboard/dashboard";
 import Calender from "./pages/Calender/calender";
 import Notification from "./pages/Notifications/notification";
 import Reservation from "./pages/Reservations/reservation";
+import AllReservations from "./pages/Reservations/AllReservations";
+import NewReservation from "./pages/Reservations/NewReservations";
+import CheckIn from "./pages/Reservations/CheckIn";
+import CheckOut from "./pages/Reservations/CheckOut";
+import WalkIn from "./pages/Reservations/WalkIn";
+import Cancellations from "./pages/Reservations/Cancellation";
 import Guests from "./pages/Guests/guests";
 import GuestServices from "./pages/GuestServices/guestServices";
 import EventCalender from "./pages/EventCalender/eventCalender";
@@ -32,16 +38,14 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/calendar" element={<Calender />} />
             <Route path="/notifications" element={<Notification />} />
-            <Route path="/reservations" element={<Reservation />}>
-              <Route path="/reservations/all" element={<Reservation />} />
-              <Route path="/reservations/new" element={<Reservation />} />
-              <Route path="/reservations/check-in" element={<Reservation />} />
-              <Route path="/reservations/check-out" element={<Reservation />} />
-              <Route path="/reservations/walk-in" element={<Reservation />} />
-              <Route
-                path="/reservations/cancellations"
-                element={<Reservation />}
-              />
+            <Route path="reservations" element={<Reservation />}>
+              <Route index element={<AllReservations />} />
+              <Route path="all" element={<AllReservations />} />
+              <Route path="new" element={<NewReservation />} />
+              <Route path="check-in" element={<CheckIn />} />
+              <Route path="check-out" element={<CheckOut />} />
+              <Route path="walk-in" element={<WalkIn />} />
+              <Route path="cancellations" element={<Cancellations />} />
             </Route>
             <Route path="/guests" element={<Guests />}>
               <Route path="/guests/directory" element={<Guests />} />
