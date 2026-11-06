@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const staff = () => {
   return (
     <div>
-      Staff
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default staff
+export default staff;

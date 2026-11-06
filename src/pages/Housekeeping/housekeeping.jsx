@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const housekeeping = () => {
   return (
     <div>
-      Housekeeping
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default housekeeping
+export default housekeeping;

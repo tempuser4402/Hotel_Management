@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const report = () => {
   return (
     <div>
-      Report
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default report
+export default report;

@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const integration = () => {
   return (
     <div>
-      Integration
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default integration
+export default integration;

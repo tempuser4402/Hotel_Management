@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const maintenance = () => {
   return (
     <div>
-      Maintenance
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default maintenance
+export default maintenance;

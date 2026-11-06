@@ -19,6 +19,7 @@ import {
   calendarBookings,
   calendarBlocks,
 } from "./calenderData.jsx";
+import { NavLink } from "react-router-dom";
 
 const toDate = (value) => {
   const [year, month, day] = value.split("-").map(Number);
@@ -38,8 +39,7 @@ const addDays = (date, amount) => {
   return result;
 };
 
-const formatDate = (date, options) =>
-  date.toLocaleDateString("en-IN", options);
+const formatDate = (date, options) => date.toLocaleDateString("en-IN", options);
 
 const startOfWeek = (date) => {
   const result = new Date(date);
@@ -56,9 +56,7 @@ const statusStyles = {
 };
 
 export default function Calendar() {
-  const [selectedDate, setSelectedDate] = useState(
-    new Date(2026, 10, 6)
-  );
+  const [selectedDate, setSelectedDate] = useState(new Date(2026, 10, 6));
 
   const [view, setView] = useState("week");
   const [roomType, setRoomType] = useState("All");
@@ -81,28 +79,23 @@ export default function Calendar() {
 
     if (view === "week") {
       const start = startOfWeek(selectedDate);
-      return Array.from({ length: 7 }, (_, i) =>
-        addDays(start, i)
-      );
+      return Array.from({ length: 7 }, (_, i) => addDays(start, i));
     }
 
     const firstDay = new Date(
       selectedDate.getFullYear(),
       selectedDate.getMonth(),
-      1
+      1,
     );
 
     const start = startOfWeek(firstDay);
 
-    return Array.from({ length: 42 }, (_, i) =>
-      addDays(start, i)
-    );
+    return Array.from({ length: 42 }, (_, i) => addDays(start, i));
   }, [selectedDate, view]);
 
   const filteredRooms = useMemo(() => {
     return calendarRooms.filter((room) => {
-      const matchesType =
-        roomType === "All" || room.type === roomType;
+      const matchesType = roomType === "All" || room.type === roomType;
 
       const matchesSearch =
         room.number.toLowerCase().includes(search.toLowerCase()) ||
@@ -155,21 +148,23 @@ export default function Calendar() {
   const getRoomBooking = (roomId, date) => {
     const key = dateKey(date);
 
-    return calendarBookings.find((booking) =>
-      booking.roomId === roomId &&
-      booking.status !== "Cancelled" &&
-      key >= booking.checkIn &&
-      key < booking.checkOut
+    return calendarBookings.find(
+      (booking) =>
+        booking.roomId === roomId &&
+        booking.status !== "Cancelled" &&
+        key >= booking.checkIn &&
+        key < booking.checkOut,
     );
   };
 
   const getRoomBlock = (roomId, date) => {
     const key = dateKey(date);
 
-    return calendarBlocks.find((block) =>
-      block.roomId === roomId &&
-      key >= block.startDate &&
-      key < block.endDate
+    return calendarBlocks.find(
+      (block) =>
+        block.roomId === roomId &&
+        key >= block.startDate &&
+        key < block.endDate,
     );
   };
 
@@ -196,17 +191,19 @@ export default function Calendar() {
       return;
     }
 
-    const overlaps = calendarBookings.some((booking) =>
-      booking.roomId === roomId &&
-      booking.status !== "Cancelled" &&
-      booking.checkIn < checkOut &&
-      booking.checkOut > checkIn
+    const overlaps = calendarBookings.some(
+      (booking) =>
+        booking.roomId === roomId &&
+        booking.status !== "Cancelled" &&
+        booking.checkIn < checkOut &&
+        booking.checkOut > checkIn,
     );
 
-    const blocked = calendarBlocks.some((block) =>
-      block.roomId === roomId &&
-      block.startDate < checkOut &&
-      block.endDate > checkIn
+    const blocked = calendarBlocks.some(
+      (block) =>
+        block.roomId === roomId &&
+        block.startDate < checkOut &&
+        block.endDate > checkIn,
     );
 
     if (overlaps || blocked) {
@@ -227,13 +224,9 @@ export default function Calendar() {
   };
 
   const getBookingPosition = (booking) => {
-    const first = dates.findIndex(
-      (date) => dateKey(date) >= booking.checkIn
-    );
+    const first = dates.findIndex((date) => dateKey(date) >= booking.checkIn);
 
-    const last = dates.findIndex(
-      (date) => dateKey(date) >= booking.checkOut
-    );
+    const last = dates.findIndex((date) => dateKey(date) >= booking.checkOut);
 
     const start = first === -1 ? 0 : first;
     const end = last === -1 ? dates.length : last;
@@ -246,22 +239,8 @@ export default function Calendar() {
     };
   };
 
-  const openNewBooking = () => {
-    setBookingForm({
-      guest: "",
-      phone: "",
-      roomId: "",
-      checkIn: dateKey(selectedDate),
-      checkOut: dateKey(addDays(selectedDate, 1)),
-      guests: 1,
-    });
-
-    setShowBookingModal(true);
-  };
-
   return (
     <div className="w-full min-h-screen bg-[#F5F7FA] p-4 md:p-6 lg:p-7 space-y-6">
-
       {/* HEADER */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
@@ -288,13 +267,13 @@ export default function Calendar() {
             Today
           </button>
 
-          <button
-            onClick={openNewBooking}
+          <NavLink
+            to="/reservations/walk-in"
             className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 rounded-lg text-sm font-medium text-white hover:bg-blue-700"
           >
             <Plus size={17} />
             New Booking
-          </button>
+          </NavLink>
         </div>
       </div>
 
@@ -309,17 +288,15 @@ export default function Calendar() {
           },
           {
             label: "Reservations",
-            value: calendarBookings.filter(
-              (b) => b.status !== "Cancelled"
-            ).length,
+            value: calendarBookings.filter((b) => b.status !== "Cancelled")
+              .length,
             icon: CalendarDays,
             color: "bg-purple-50 text-purple-600",
           },
           {
             label: "Occupied",
-            value: calendarBookings.filter(
-              (b) => b.status === "Checked In"
-            ).length,
+            value: calendarBookings.filter((b) => b.status === "Checked In")
+              .length,
             icon: Users,
             color: "bg-green-50 text-green-600",
           },
@@ -357,9 +334,7 @@ export default function Calendar() {
 
       {/* CALENDAR TOOLBAR */}
       <div className="bg-white border border-slate-200 rounded-xl p-5">
-
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-
           <div className="flex items-center gap-3">
             <div className="flex items-center bg-white border border-slate-200 rounded-lg">
               <button
@@ -408,7 +383,6 @@ export default function Calendar() {
 
         {/* FILTERS */}
         <div className="flex flex-wrap items-center gap-3 mt-5 pt-4 border-t border-slate-100">
-
           <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2">
             <Search size={16} className="text-slate-400" />
 
@@ -456,7 +430,6 @@ export default function Calendar() {
       {view === "week" && (
         <div className="bg-white border border-slate-200 rounded-xl overflow-x-auto">
           <div className="min-w-262.5">
-
             <div className="grid grid-cols-[150px_repeat(7,minmax(0,1fr))] border-b border-slate-200 bg-slate-50">
               <div className="p-4 text-sm font-semibold text-slate-600">
                 Rooms
@@ -480,8 +453,7 @@ export default function Calendar() {
             {filteredRooms.map((room) => {
               const roomBookings = calendarBookings.filter(
                 (booking) =>
-                  booking.roomId === room.id &&
-                  booking.status !== "Cancelled"
+                  booking.roomId === room.id && booking.status !== "Cancelled",
               );
 
               const visibleBookings = roomBookings
@@ -595,27 +567,24 @@ export default function Calendar() {
       {view === "month" && (
         <div className="bg-white border border-slate-200 rounded-xl p-4">
           <div className="grid grid-cols-7">
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
-              (day) => (
-                <div
-                  key={day}
-                  className="p-3 text-center text-xs font-semibold text-slate-500"
-                >
-                  {day}
-                </div>
-              )
-            )}
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+              <div
+                key={day}
+                className="p-3 text-center text-xs font-semibold text-slate-500"
+              >
+                {day}
+              </div>
+            ))}
 
             {dates.map((date) => {
               const dayBookings = calendarBookings.filter(
                 (booking) =>
                   dateKey(date) >= booking.checkIn &&
                   dateKey(date) < booking.checkOut &&
-                  booking.status !== "Cancelled"
+                  booking.status !== "Cancelled",
               );
 
-              const currentMonth =
-                date.getMonth() === selectedDate.getMonth();
+              const currentMonth = date.getMonth() === selectedDate.getMonth();
 
               return (
                 <button
@@ -717,9 +686,7 @@ export default function Calendar() {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-slate-500">
-                  Reservation Details
-                </p>
+                <p className="text-xs text-slate-500">Reservation Details</p>
                 <h2 className="mt-1 text-xl font-bold text-slate-900">
                   {selectedBooking.id}
                 </h2>
@@ -754,9 +721,11 @@ export default function Calendar() {
               <div className="flex items-center gap-2 text-sm text-slate-600">
                 <BedDouble size={16} />
                 Room{" "}
-                {calendarRooms.find(
-                  (room) => room.id === selectedBooking.roomId
-                )?.number}
+                {
+                  calendarRooms.find(
+                    (room) => room.id === selectedBooking.roomId,
+                  )?.number
+                }
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -777,15 +746,16 @@ export default function Calendar() {
 
               <div className="rounded-lg border border-slate-200 p-4">
                 <p className="text-xs text-slate-500">Booking Status</p>
-                <span className={`mt-2 inline-block rounded-full border px-2.5 py-1 text-xs font-semibold ${
-                  statusStyles[selectedBooking.status] || statusStyles.Confirmed
-                }`}>
+                <span
+                  className={`mt-2 inline-block rounded-full border px-2.5 py-1 text-xs font-semibold ${
+                    statusStyles[selectedBooking.status] ||
+                    statusStyles.Confirmed
+                  }`}
+                >
                   {selectedBooking.status}
                 </span>
 
-                <p className="mt-4 text-xs text-slate-500">
-                  Payment Status
-                </p>
+                <p className="mt-4 text-xs text-slate-500">Payment Status</p>
                 <p className="mt-1 text-sm font-medium text-slate-800">
                   {selectedBooking.paymentStatus}
                 </p>
@@ -865,9 +835,7 @@ export default function Calendar() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-sm font-medium text-slate-600">
-                Room
-              </label>
+              <label className="text-sm font-medium text-slate-600">Room</label>
               <select
                 required
                 value={bookingForm.roomId}

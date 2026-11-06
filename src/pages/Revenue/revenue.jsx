@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const revenue = () => {
   return (
     <div>
-      Revenue
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default revenue
+export default revenue;

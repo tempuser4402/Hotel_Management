@@ -12,8 +12,16 @@ import WalkIn from "./pages/Reservations/WalkIn";
 import Cancellations from "./pages/Reservations/Cancellation";
 import Guests from "./pages/Guests/guests";
 import GuestServices from "./pages/GuestServices/guestServices";
-import EventCalender from "./pages/EventCalender/eventCalender";
+import GuestDirectory from "./pages/Guests/GuestDirectory";
+import GuestProfiles from "./pages/Guests/GuestProfile";
+import VIPGuests from "./pages/Guests/VIPGuests";
+import GuestFeedback from "./pages/Guests/GuestFeedback";
+import GuestLoyalty from "./pages/Guests/GuestLoyalty";
+import EventCalender from "./pages/Events&Banquets/EventCalender";
+import GuestRequests from "./pages/GuestServices/GuestRequests";
+import RoomService from "./pages/GuestServices/RoomService";
 import Room from "./pages/Rooms/room";
+import Events from "./pages/Events&Banquets/events";
 import Housekeeping from "./pages/Housekeeping/housekeeping";
 import Maintenance from "./pages/Maintenance/maintenance";
 import Restaurant from "./pages/Restaurant/restaurant";
@@ -23,11 +31,84 @@ import Revenue from "./pages/Revenue/revenue";
 import Staff from "./pages/Staff/staff";
 import Report from "./pages/Reports/report";
 import NightAudit from "./pages/NightAudit/nightAudit";
-import AccessControl from "./pages/AccessControl/accessControl";
+import AccessControl from "./pages/AccessControl/control";
 import Settings from "./pages/Settings/setting";
 import Integration from "./pages/Integration/integration";
 import Support from "./pages/Support/support";
-import { BrowserRouter, Route, Routes, HashRouter } from "react-router-dom";
+import { Route, Routes, HashRouter } from "react-router-dom";
+import GuestComplaints from "./pages/GuestServices/GuestComplaints";
+import SpecialRequests from "./pages/GuestServices/SpecialRequests";
+import RoomOverview from "./pages/Rooms/RoomOverview";
+import AllRooms from "./pages/Rooms/AllRooms";
+import RoomTypes from "./pages/Rooms/RoomTypes";
+import RoomAvailability from "./pages/Rooms/RoomAvailability";
+import FloorPlan from "./pages/Events&Banquets/AllEvents";
+import AllEvents from "./pages/Events&Banquets/AllEvents";
+import RatePlans from "./pages/Rooms/RatePlans";
+import RoomRestrictions from "./pages/Rooms/RoomRestrictions";
+import NewEventBooking from "./pages/Events&Banquets/NewEventBooking";
+import HousekeepingOverview from "./pages/Housekeeping/HousekeepingOverview";
+import Venues from "./pages/Events&Banquets/Venues";
+import Packages from "./pages/Events&Banquets/Packages";
+import CleaningTasks from "./pages/Housekeeping/CleaningTask";
+import RoomInspections from "./pages/Housekeeping/RoomInspections";
+import EventEnquiries from "./pages/Events&Banquets/EventEnquiries";
+import StaffAssignments from "./pages/Housekeeping/StaffAssignments";
+import LostFound from "./pages/Housekeeping/LostFound";
+import EventPayments from "./pages/Events&Banquets/EventPayments";
+import EventManagement from "./pages/Events&Banquets/EventManagement";
+import RestaurantOverview from "./pages/Restaurant/RestaurantOverview";
+import MaintenanceOverview from "./pages/Maintenance/MaintenanceOverview";
+import RestaurantOrders from "./pages/Restaurant/RestaurantOrders";
+import MaintenanceOrders from "./pages/Maintenance/MaintenanceOrders";
+import RestaurantMenu from "./pages/Restaurant/RestaurantMenu";
+import RestaurantTables from "./pages/Restaurant/RestaurantTables";
+import RestaurantKitchen from "./pages/Restaurant/RestaurantKitchen";
+import MaintenanceIssues from "./pages/Maintenance/MaintenanceIssue";
+import InventoryOverview from "./pages/Inventory/InventoryOverview";
+import StockItems from "./pages/Inventory/StockItems";
+import Suppliers from "./pages/Inventory/Suppliers";
+import PreventiveMaintenance from "./pages/Maintenance/PreventMaintenance";
+import PurchaseOrders from "./pages/Inventory/PurchaseOrders";
+import StockTransfers from "./pages/Inventory/StockTransfers";
+import LowStockAlerts from "./pages/Inventory/LowStockAlerts";
+import FinanceOverview from "./pages/Finance/FinanceOverview";
+import Invoices from "./pages/Finance/Invoices";
+import Payments from "./pages/Finance/Payments";
+import Refunds from "./pages/Finance/Refunds";
+import Expenses from "./pages/Finance/Expenses";
+import Taxes from "./pages/Finance/Taxes";
+import CashBook from "./pages/Finance/CashBook";
+import RevenueOverview from "./pages/Revenue/RevenueOverview";
+import RoomPricing from "./pages/Revenue/RoomPricing";
+import OccupancyForecast from "./pages/Revenue/OccupancyForecast";
+import Promotions from "./pages/Revenue/Promotions";
+import CorporateRates from "./pages/Revenue/CorporateRates";
+import StaffDirectory from "./pages/Staff/StaffDirectory";
+import Departments from "./pages/Staff/Departments";
+import RolesDesignations from "./pages/Staff/RoleDesignations";
+import Attendance from "./pages/Staff/Attendance";
+import ShiftScheduling from "./pages/Staff/ShiftScheduling";
+import LeaveManagement from "./pages/Staff/LeaveManagement";
+import Payroll from "./pages/Staff/Payroll";
+import BusinessOverview from "./pages/Reports/BusinessOverview";
+import ReservationReports from "./pages/Reports/ReservationReport";
+import RevenueReports from "./pages/Reports/RevenueReports";
+import OccupancyReports from "./pages/Reports/OccupancyReports";
+import GuestReports from "./pages/Reports/GuestReports";
+import StaffReports from "./pages/Reports/StaffReports";
+import Control from "./pages/AccessControl/control";
+import { AllUsers } from "./pages/AccessControl/accessControl";
+import AuditLogs from "./pages/AccessControl/AuditLogs";
+import RolesPermissions from "./pages/AccessControl/RolesPermission";
+import ChannelManager from "./pages/Integration/ChannelManager";
+import OTAConnections from "./pages/Integration/OTAConnections";
+import PaymentGateways from "./pages/Integration/PaymentGateway";
+import GeneralSettings from "./pages/Settings/GeneralSettings";
+import PropertyProfile from "./pages/Settings/PropertyProfile";
+import TaxesPolicies from "./pages/Settings/TaxesPolicies";
+import RoomConfiguration from "./pages/Settings/RoomConfiguration";
+import BookingSettings from "./pages/Settings/BookingSettings";
 
 function App() {
   return (
@@ -48,134 +129,131 @@ function App() {
               <Route path="cancellations" element={<Cancellations />} />
             </Route>
             <Route path="/guests" element={<Guests />}>
-              <Route path="/guests/directory" element={<Guests />} />
-              <Route path="/guests/profiles" element={<Guests />} />
-              <Route path="/guests/vip" element={<Guests />} />
-              <Route path="/guests/feedback" element={<Guests />} />
-              <Route path="/guests/loyalty" element={<Guests />} />
+              <Route index element={<GuestDirectory />} />
+              <Route path="directory" element={<GuestDirectory />} />
+              <Route path="/guests/profiles" element={<GuestProfiles />} />
+              <Route path="/guests/vip" element={<VIPGuests />} />
+              <Route path="/guests/feedback" element={<GuestFeedback />} />
+              <Route path="/guests/loyalty" element={<GuestLoyalty />} />
             </Route>
             <Route path="/guest-services" element={<GuestServices />}>
-              <Route
-                path="/guest-services/requests"
-                element={<GuestServices />}
-              />
-              <Route
-                path="/guest-services/room-service"
-                element={<GuestServices />}
-              />
-              <Route
-                path="/guest-services/complaints"
-                element={<GuestServices />}
-              />
-              <Route
-                path="/guest-services/special-requests"
-                element={<GuestServices />}
-              />
+              <Route index element={<GuestRequests />} />
+              <Route path="requests" element={<GuestRequests />} />
+              <Route path="room-service" element={<RoomService />} />
+              <Route path="complaints" element={<GuestComplaints />} />
+              <Route path="special-requests" element={<SpecialRequests />} />
             </Route>
-            <Route path="events/calendar" element={<EventCalender />} />
-            <Route path="events/all" element={<EventCalender />} />
-            <Route path="events/new" element={<EventCalender />} />
-            <Route path="events/venues" element={<EventCalender />} />
-            <Route path="events/packages" element={<EventCalender />} />
-            <Route path="events/payments" element={<EventCalender />} />
-            <Route path="events/enquiries" element={<EventCalender />} />
-            <Route path="events/management" element={<EventCalender />} />
+            <Route path="/events" element={<Events />}>
+              <Route index element={<EventCalender />} />
+              <Route path="calendar" element={<EventCalender />} />
+              <Route path="all" element={<AllEvents />} />
+              <Route path="new" element={<NewEventBooking />} />
+              <Route path="venues" element={<Venues />} />
+              <Route path="packages" element={<Packages />} />
+              <Route path="payments" element={<EventPayments />} />
+              <Route path="enquiries" element={<EventEnquiries />} />
+              <Route path="management" element={<EventManagement />} />
+            </Route>
             <Route path="/rooms" element={<Room />}>
-              <Route path="/rooms/all" element={<Room />} />
-              <Route path="/rooms/types" element={<Room />} />
-              <Route path="/rooms/availability" element={<Room />} />
-              <Route path="/rooms/floors" element={<Room />} />
-              <Route path="/rooms/rates" element={<Room />} />
-              <Route path="/rooms/restrictions" element={<Room />} />
+              <Route index element={<RoomOverview />} />
+              <Route path="all" element={<AllRooms />} />
+              <Route path="types" element={<RoomTypes />} />
+              <Route path="availability" element={<RoomAvailability />} />
+              <Route path="floors" element={<FloorPlan />} />
+              <Route path="rates" element={<RatePlans />} />
+              <Route path="restrictions" element={<RoomRestrictions />} />
             </Route>
             <Route path="/housekeeping" element={<Housekeeping />}>
-              <Route path="/housekeeping/tasks" element={<Housekeeping />} />
-              <Route
-                path="/housekeeping/inspections"
-                element={<Housekeeping />}
-              />
-              <Route
-                path="/housekeeping/assignments"
-                element={<Housekeeping />}
-              />
-              <Route
-                path="/housekeeping/lost-found"
-                element={<Housekeeping />}
-              />
+              <Route index element={<HousekeepingOverview />} />
+              <Route path="overview" element={<HousekeepingOverview />} />
+              <Route path="tasks" element={<CleaningTasks />} />
+              <Route path="inspections" element={<RoomInspections />} />
+              <Route path="assignments" element={<StaffAssignments />} />
+              <Route path="lost-found" element={<LostFound />} />
             </Route>
             <Route path="/maintenance" element={<Maintenance />}>
-              <Route path="/maintenance/orders" element={<Maintenance />} />
-              <Route path="/maintenance/issues" element={<Maintenance />} />
-              <Route path="/maintenance/preventive" element={<Maintenance />} />
+              <Route index element={<MaintenanceOverview />} />
+              <Route path="orders" element={<MaintenanceOrders />} />
+              <Route path="issues" element={<MaintenanceIssues />} />
+              <Route path="preventive" element={<PreventiveMaintenance />} />
             </Route>
             <Route path="/restaurant" element={<Restaurant />}>
-              <Route path="/restaurant/orders" element={<Restaurant />} />
-              <Route path="/restaurant/menu" element={<Restaurant />} />
-              <Route path="/restaurant/tables" element={<Restaurant />} />
-              <Route path="/restaurant/kitchen" element={<Restaurant />} />
+              <Route index element={<RestaurantOverview />} />
+              <Route path="orders" element={<RestaurantOrders />} />
+              <Route path="menu" element={<RestaurantMenu />} />
+              <Route path="tables" element={<RestaurantTables />} />
+              <Route path="kitchen" element={<RestaurantKitchen />} />
             </Route>
             <Route path="/inventory" element={<Inventory />}>
-              <Route path="/inventory/items" element={<Inventory />} />
-              <Route path="/inventory/suppliers" element={<Inventory />} />
-              <Route
-                path="/inventory/purchase-orders"
-                element={<Inventory />}
-              />
-              <Route path="/inventory/transfers" element={<Inventory />} />
-              <Route path="/inventory/low-stock" element={<Inventory />} />
+              <Route index element={<InventoryOverview />} />
+              <Route path="items" element={<StockItems />} />
+              <Route path="suppliers" element={<Suppliers />} />
+              <Route path="purchase-orders" element={<PurchaseOrders />} />
+              <Route path="transfers" element={<StockTransfers />} />
+              <Route path="low-stock" element={<LowStockAlerts />} />
             </Route>
             <Route path="/finance" element={<Finance />}>
-              <Route path="/finance/invoices" element={<Finance />} />
-              <Route path="/finance/payments" element={<Finance />} />
-              <Route path="/finance/refunds" element={<Finance />} />
-              <Route path="/finance/expenses" element={<Finance />} />
-              <Route path="/finance/taxes" element={<Finance />} />
-              <Route path="/finance/cash-book" element={<Finance />} />
+              <Route index element={<FinanceOverview />} />
+              <Route path="invoices" element={<Invoices />} />
+              <Route path="payments" element={<Payments />} />
+              <Route path="refunds" element={<Refunds />} />
+              <Route path="expenses" element={<Expenses />} />
+              <Route path="taxes" element={<Taxes />} />
+              <Route path="cash-book" element={<CashBook />} />
             </Route>
             <Route path="/revenue" element={<Revenue />}>
-              <Route path="/revenue/pricing" element={<Revenue />} />
-              <Route path="/revenue/forecast" element={<Revenue />} />
-              <Route path="/revenue/promotions" element={<Revenue />} />
-              <Route path="/revenue/corporate-rates" element={<Revenue />} />
+              <Route index element={<RevenueOverview />} />
+              <Route path="pricing" element={<RoomPricing />} />
+              <Route path="forecast" element={<OccupancyForecast />} />
+              <Route path="promotions" element={<Promotions />} />
+              <Route path="corporate-rates" element={<CorporateRates />} />
             </Route>
             <Route path="/staff" element={<Staff />}>
-              <Route path="/staff/departments" element={<Staff />} />
-              <Route path="/staff/roles" element={<Staff />} />
-              <Route path="/staff/attendance" element={<Staff />} />
-              <Route path="/staff/shifts" element={<Staff />} />
-              <Route path="/staff/leaves" element={<Staff />} />
-              <Route path="/staff/payroll" element={<Staff />} />
+              <Route index element={<StaffDirectory />} />
+              <Route path="departments" element={<Departments />} />
+              <Route path="roles" element={<RolesDesignations />} />
+              <Route path="attendance" element={<Attendance />} />
+              <Route path="shifts" element={<ShiftScheduling />} />
+              <Route path="leaves" element={<LeaveManagement />} />
+              <Route path="payroll" element={<Payroll />} />
             </Route>
             <Route path="/reports" element={<Report />}>
-              <Route path="/reports/reservations" element={<Report />} />
-              <Route path="/reports/revenue" element={<Report />} />
-              <Route path="/reports/occupancy" element={<Report />} />
-              <Route path="/reports/guests" element={<Report />} />
-              <Route path="/reports/staff" element={<Report />} />
+              <Route index element={<BusinessOverview />} />
+              <Route path="reservations" element={<ReservationReports />} />
+              <Route path="revenue" element={<RevenueReports />} />
+              <Route path="occupancy" element={<OccupancyReports />} />
+              <Route path="guests" element={<GuestReports />} />
+              <Route path="staff" element={<StaffReports />} />
             </Route>
             <Route path="/night-audit" element={<NightAudit />} />
-            <Route path="/access-control" element={<AccessControl />}>
-              <Route path="/access-control/users" element={<AccessControl />} />
-              <Route path="/access-control/roles" element={<AccessControl />} />
+            <Route path="/access-control" element={<Control />}>
+              <Route index element={<AllUsers />} />
+              <Route path="/access-control/users" element={<AuditLogs />} />
+              <Route path="/access-control/roles" element={<RolesPermissions />} />
               <Route
                 path="/access-control/audit-logs"
-                element={<AccessControl />}
+                element={<AuditLogs />}
               />
             </Route>
             <Route path="/settings" element={<Settings />}>
-              <Route path="/settings/general" element={<Settings />} />
-              <Route path="/settings/property" element={<Settings />} />
-              <Route path="/settings/policies" element={<Settings />} />
-              <Route path="/settings/rooms" element={<Settings />} />
-              <Route path="/settings/bookings" element={<Settings />} />
+              <Route index element={<GeneralSettings />} />
+              <Route path="general" element={<GeneralSettings />} />
+              <Route path="property" element={<PropertyProfile />} />
+              <Route path="policies" element={<TaxesPolicies />} />
+              <Route path="rooms" element={<RoomConfiguration />} />
+              <Route path="bookings" element={<BookingSettings />} />
             </Route>
             <Route path="/integrations" element={<Integration />}>
               <Route
-                path="/integrations/channel-manager"
-                element={<Integration />}
+                index
+                element={<ChannelManager />}
               />
-              <Route path="/integrations/ota" element={<Integration />} />
-              <Route path="/integrations/payments" element={<Integration />} />
+              <Route
+                path="channel-manager"
+                element={<ChannelManager />}
+              />
+              <Route path="ota" element={<OTAConnections />} />
+              <Route path="payments" element={<PaymentGateways />} />
             </Route>
             <Route path="/support" element={<Support />} />
           </Route>

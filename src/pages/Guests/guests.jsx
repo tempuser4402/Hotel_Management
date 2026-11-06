@@ -1,11 +1,11 @@
-import React from 'react'
+import { Outlet } from "react-router-dom";
 
 const guests = () => {
   return (
     <div>
-      Guests
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default guests
+export default guests;

@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const restaurant = () => {
   return (
     <div>
-      Restaurant
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default restaurant
+export default restaurant;

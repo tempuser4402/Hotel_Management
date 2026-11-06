@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const room = () => {
   return (
     <div>
-      Rooms
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default room
+export default room;

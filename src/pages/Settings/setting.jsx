@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const setting = () => {
   return (
     <div>
-      Settings
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default setting
+export default setting;

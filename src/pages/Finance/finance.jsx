@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const finance = () => {
   return (
     <div>
-      Finance
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default finance
+export default finance;
